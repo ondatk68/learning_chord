@@ -1,0 +1,64 @@
+#chord_field{
+    width:100vw;
+    height:50vh;
+    background-color: yellow;
+}
+#score{
+    width:50vw;
+    height:50vh;
+    background-color: white;
+    float:left;
+}
+#chordname{
+    width:50vw;
+    height:50vh;
+    background-color: black;
+    float: right;
+}
+#piano_field{
+    width:84vw;
+    height:40vh;
+    background-color: aqua;
+    padding-left: 8vw;
+    padding-right: 8vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+#piano{
+    width: 84vw;
+    height: 40vh;
+    background-color: white;
+    display:flex;
+}
+.white{
+    position: relative;
+    width: 7vw;
+    height:40vh;
+    background-color: white;
+    border: solid;
+    border-color: black;
+    box-sizing: border-box;
+    z-index:1;
+    color:black;
+}
+.black{
+    position:relative;
+    z-index: 2;
+    width: 4vw;
+    height: 20vh;
+    background-color: black;
+    border: solid;
+    border-color: black;
+    box-sizing: border-box;
+    margin-left: -2vw;
+    margin-right: -2vw;
+    color: white;
+}
+.key_name{
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    bottom: 5vh;
+    transform: translate(-50%, -50%);
+    
+}
