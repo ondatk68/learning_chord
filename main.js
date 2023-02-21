@@ -97,7 +97,6 @@ function numToChord(note_num){
             note_num[i] -= root_num;
             note_num[i] %= 12;
         }
-        console.log(note_num);
         //3について
         if(note_num.includes(3) && !note_num.includes(4)){
             root += "m";
@@ -178,7 +177,6 @@ function numToChord(note_num){
         }
 
         //omitについて
-        console.log(oneIncludes([2,3,4,5],note_num));
         if(!oneIncludes([2,3,4,5],note_num)){
             root += "(omit3)";
         }
@@ -204,11 +202,10 @@ function check(){
             document.getElementById(key2note[i]).style.backgroundColor = document.getElementById(key2note[i]).className;
         }
     }
-    console.log(on_notes);
+    //console.log(on_notes);
     var note_num = onNotesToNum();
     var chord = numToChord(note_num);
-    //console.log(note_num);
-    console.log(chord);
+    //console.log(chord);
     document.getElementById("symbol").innerHTML=chord;
     clearStave();
     reloadStave();
@@ -218,6 +215,7 @@ function check(){
 
 function on_press(event){
     let pressed = event.key;
+    //console.log(pressed);
     if((Object.keys(is_pressed).includes(pressed)) && (is_pressed[pressed][0] == 0)){
         is_pressed[pressed][0] = 1;
         on_notes.push(key2note[pressed]);
@@ -236,7 +234,28 @@ function on_release(event){
     }
 }
 
+// function clearSvg(){
+//     var elements = document.getElementsByTagName("svg");
+//     while(elements[0]){
+//         elements[0].parentNode.removeChild(elements[0]);
+//     }
+// }
+
+// function reloadSvg(){
+//     const scoreh = document.getElementById('score').clientHeight;
+//     const stave = new Stave(window.innerWidth*0.1/3, (scoreh/2-66)/3-44, window.innerWidth*0.3/3);
+//     // Add a clef and time signature.
+//     stave.addClef('treble');
+//     context.scale(3,3);
+//     stave.setContext(context).draw();
+//     reloadStave();
+// }
+// function on_resize(){
+//     clearSvg().then(reloadSvg);
+// }
+
 window.addEventListener('DOMContentLoaded', function(){  
     window.addEventListener("keydown", on_press);
     window.addEventListener("keyup", on_release);
+    //window.addEventListener('resize', on_resize);
 });
