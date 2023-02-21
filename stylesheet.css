@@ -14,6 +14,22 @@
     height:50vh;
     background-color: black;
     float: right;
+    position: relative;
+}
+#symbol{
+    position: absolute;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    color: white;
+    width: 40vw;
+    height: 40vh;
+    text-align: center;
+    line-height: 40vh;
+    font-size: 20vmin;
+    
+
 }
 #piano_field{
     width:84vw;

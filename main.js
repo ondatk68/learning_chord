@@ -1,8 +1,8 @@
 import { Vex, Accidental, StaveNote, Formatter } from "./node_modules/vexflow/build/esm/entry/vexflow.js";
 
 var key = ['a','w','s','e','d','f','t','g','y','h','u','j','k','o','l','p',';',':','[',']']
-var note=["C/4","C#/4","D/4","D#/4","E/4","F/4","F#/4","G/4","G#/4","A/4","A#/4","B/4",
-          "C/5","C#/5","D/5","D#/5","E/5","F/5","F#/5","G/5"]
+var note=["C/4","C#/4","D/4","Eb/4","E/4","F/4","F#/4","G/4","G#/4","A/4","Bb/4","B/4",
+          "C/5","C#/5","D/5","Eb/5","E/5","F/5","F#/5","G/5"]
 
 var is_pressed = {};
 var key2note = {};
@@ -29,11 +29,13 @@ const context = renderer.getContext();
 context.setFont('Arial', 10);
 
 // Create a stave of width 400 at position 10, 40.
-const stave = new Stave(WIDTH*0.05, HEIGHT*0.1, WIDTH*0.4);
+const scoreh = document.getElementById('score').clientHeight;
+const stave = new Stave(WIDTH*0.125/3, (scoreh/2-66)/3-44, WIDTH*0.2/3);
 
 // Add a clef and time signature.
-stave.addClef('treble').addTimeSignature('4/4');
+stave.addClef('treble');
 
+context.scale(3,3);
 let on_notes = []
 
 // Connect it to the rendering context and draw!
@@ -64,7 +66,7 @@ function reloadStave(){
     }
     let voice = new Vex.Flow.Voice({num_beats: 4,  beat_value: 4});
     voice.addTickables(notes);
-    const formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice], 400);
+    const formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice], 0);
     voice.draw(context, stave);
 }
 
@@ -76,9 +78,17 @@ function onNotesToNum(){
     num.sort(function (a, b) {
         return a - b;
     })
-    return num
+    return num;
 }
 
+function numToChord(note_num){
+    if(note_num.length!=0){
+        let root = note[note_num[0]%12].slice(0,-2);
+        return root;
+    }else{
+        return "";
+    }
+}
 
 
 function check(){
@@ -92,7 +102,10 @@ function check(){
     }
     console.log(on_notes);
     var note_num = onNotesToNum();
+    var chord = numToChord(note_num);
     console.log(note_num);
+    console.log(chord);
+    document.getElementById("symbol").innerHTML=chord;
     clearStave();
     reloadStave();
     
