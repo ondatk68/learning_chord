@@ -30,7 +30,7 @@ context.setFont('Arial', 10);
 
 // Create a stave of width 400 at position 10, 40.
 const scoreh = document.getElementById('score').clientHeight;
-const stave = new Stave(WIDTH*0.125/3, (scoreh/2-66)/3-44, WIDTH*0.2/3);
+const stave = new Stave(WIDTH*0.1/3, (scoreh/2-66)/3-44, WIDTH*0.3/3);
 
 // Add a clef and time signature.
 stave.addClef('treble');
@@ -81,9 +81,113 @@ function onNotesToNum(){
     return num;
 }
 
+function allIncludes(temp, notes){
+    return temp.every(value => notes.includes(value));
+}
+
+function oneIncludes(temp, notes){
+    return temp.some(value => notes.includes(value));
+}
+
 function numToChord(note_num){
     if(note_num.length!=0){
-        let root = note[note_num[0]%12].slice(0,-2);
+        let root_num = note_num[0]
+        let root = note[root_num%12].slice(0,-2);
+        for(let i in note_num){
+            note_num[i] -= root_num;
+            note_num[i] %= 12;
+        }
+        console.log(note_num);
+        //3について
+        if(note_num.includes(3) && !note_num.includes(4)){
+            root += "m";
+        }
+        //7について
+        if(note_num.includes(11)){
+            root += "M7";
+        }else if(note_num.includes(10)){
+            root += "7";
+        }else if(note_num.includes(9)){
+            root += "6";
+        }
+
+        //3追加
+        if(!note_num.includes(3) && !note_num.includes(4)){
+            if(note_num.includes(5)){
+                root += "sus4";
+            }else if(note_num.includes(2)){
+                root += "sus2";
+            }
+        }
+
+        //5について
+        if(!note_num.includes(7)){
+            if(note_num.includes(6)){
+                root += "-5";
+            }else if(note_num.includes(8)){
+                root += "+5";
+            }
+        }
+
+        //テンションについて
+        var tension = [];
+        if(note_num.includes(1)){
+            tension.push("b9");
+        }
+        if(oneIncludes([3,4], note_num)){
+            if(note_num.includes(2)){
+                tension.push("9");
+            }
+            if(allIncludes([3,4], note_num)){
+                tension.push("#9");
+            }
+            if(note_num.includes(5)){
+                tension.push("11");
+            }
+        }else{
+            if(allIncludes([2,5],note_num)){
+                tension.push("9");
+            }
+        }
+
+        if(note_num.includes(7)){
+            if(note_num.includes(6)){
+                tension.push("#11");
+            }
+            if(note_num.includes(8)){
+                tension.push("b13")
+            }
+        }else{
+            if(allIncludes([6,8],note_num)){
+                tension.push("b13");
+            }
+        }
+
+        if(oneIncludes([10,11], note_num)){
+            if(note_num.includes(9)){
+                tension.push("13");
+            }
+            if(allIncludes([10,11], note_num)){
+                tension.push("#13");
+            }
+        }
+
+        
+        if(tension.length>0){
+            root += "(" + tension.join() + ")";
+        }
+
+        //omitについて
+        console.log(oneIncludes([2,3,4,5],note_num));
+        if(!oneIncludes([2,3,4,5],note_num)){
+            root += "(omit3)";
+        }
+        if(!oneIncludes([6,7,8],note_num)){
+            root += "(omit5)";
+        }
+        
+
+        
         return root;
     }else{
         return "";
@@ -103,7 +207,7 @@ function check(){
     console.log(on_notes);
     var note_num = onNotesToNum();
     var chord = numToChord(note_num);
-    console.log(note_num);
+    //console.log(note_num);
     console.log(chord);
     document.getElementById("symbol").innerHTML=chord;
     clearStave();
