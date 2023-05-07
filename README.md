@@ -1,4 +1,5 @@
 # learning_chord
+## はじめてのHTML/CSS javascript
 音を選択すると、それが何というコードなのかを学べます。
 
 [こちら](git@github.com:ondatk68/learning_chord.git)から試せます。
